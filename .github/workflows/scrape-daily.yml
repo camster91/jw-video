@@ -1,0 +1,42 @@
+name: Daily Video Scrape
+
+on:
+  schedule:
+    # Run daily at 6:00 AM UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r scraper/requirements.txt
+
+      - name: Run scraper
+        run: cd scraper && python scraper.py
+
+      - name: Export videos to JSON
+        run: cd scraper && python -c "
+          import json, sqlite3
+          from export_videos import main
+          main()
+          "
+
+      - name: Commit & push changes
+        run: |
+          git config user.name "JW Video Scraper"
+          git config user.email "scraper@jw-video.local"
+          git add scraper/jw_video.db app/public/videos.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: daily video scrape $(date +%Y-%m-%d)"
+          git push

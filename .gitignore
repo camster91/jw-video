@@ -1,0 +1,8 @@
+VITE
+node_modules
+dist
+*.db
+__pycache__
+*.pyc
+.env
+*.pyc

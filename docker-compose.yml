@@ -1,0 +1,24 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    environment:
+      - JW_VIDEO_DB=/data/jw_video.db
+    volumes:
+      - ./scraper:/data
+    restart: unless-stopped
+
+  scraper:
+    build: ./scraper
+    volumes:
+      - ./scraper:/app
+    environment:
+      - DB_PATH=/app/jw_video.db
+    restart: "no"
+
+  app:
+    build: ./app
+    ports:
+      - "3000:80"
+    restart: unless-stopped
