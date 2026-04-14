@@ -6,3 +6,12 @@ __pycache__
 *.pyc
 .env
 *.pyc
+*.apk
+*.aab
+android/
+.idea/
+*.iml
+.gradle/
+local.properties
+build/
+package-lock.json
