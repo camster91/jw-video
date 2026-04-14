@@ -3,11 +3,12 @@ Export videos from SQLite to JSON for the frontend to embed at build time.
 """
 
 import json
+import os
 import sqlite3
 import sys
 
-DB_PATH = "jw_video.db"
-OUTPUT_PATH = "../app/public/videos.json"
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scraper", "jw_video.db")
+OUTPUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "public", "videos.json")
 
 
 def main():
