@@ -1,0 +1,372 @@
+/* ═══════════════════════════════════════════════════════════════
+   Live Player Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+.live-player {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	background: #000;
+	overflow: hidden;
+}
+
+.live-player video {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+/* Live Badge */
+.live-badge-container {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.live-badge {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 12px;
+	background: rgba(231, 76, 60, 0.95);
+	border-radius: 4px;
+	color: white;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+	animation: pulse-live 2s ease infinite;
+}
+
+@keyframes pulse-live {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.8;
+	}
+}
+
+.live-icon {
+	animation: blink 1s ease infinite;
+}
+
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.3;
+	}
+}
+
+.viewer-count {
+	padding: 4px 10px;
+	background: rgba(0, 0, 0, 0.7);
+	border-radius: 4px;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 0.75rem;
+}
+
+/* DVR Indicator */
+.dvr-indicator {
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 16px;
+	background: rgba(74, 108, 247, 0.9);
+	border-radius: 20px;
+	color: white;
+	z-index: 20;
+	animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+	from {
+		transform: translateX(-50%) translateY(-20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(-50%) translateY(0);
+		opacity: 1;
+	}
+}
+
+.dvr-label {
+	font-size: 0.8rem;
+	font-weight: 600;
+}
+
+.btn-go-live {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 12px;
+	font-size: 0.75rem;
+	transition: background var(--transition);
+}
+
+.btn-go-live:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+/* DVR Progress Bar */
+.dvr-progress-container {
+	padding: 0 20px 10px;
+}
+
+.dvr-progress-bar {
+	position: relative;
+	height: 5px;
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 3px;
+	cursor: pointer;
+	margin-bottom: 6px;
+	transition: height 0.15s ease;
+}
+
+.dvr-progress-bar:hover {
+	height: 7px;
+}
+
+.dvr-progress-buffered {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 3px;
+}
+
+.dvr-progress-played {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background: var(--accent);
+	border-radius: 3px;
+	transition: width 0.1s linear;
+}
+
+.dvr-progress-handle {
+	position: absolute;
+	right: -6px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 14px;
+	height: 14px;
+	background: var(--accent);
+	border-radius: 50%;
+	opacity: 0;
+	transition: opacity var(--transition);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dvr-progress-bar:hover .dvr-progress-handle {
+	opacity: 1;
+}
+
+.live-edge-marker {
+	position: absolute;
+	right: 0;
+	top: -20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 8px;
+	background: rgba(231, 76, 60, 0.9);
+	border-radius: 4px;
+	color: white;
+	font-size: 0.65rem;
+	font-weight: 700;
+	transform: translateX(50%);
+}
+
+.live-edge-marker::after {
+	content: "";
+	position: absolute;
+	bottom: -4px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid rgba(231, 76, 60, 0.9);
+}
+
+.dvr-time-display {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.75rem;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.dvr-label-text {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+/* Quality Selector */
+.quality-selector {
+	position: relative;
+}
+
+.quality-label {
+	font-size: 0.7rem;
+	margin-left: 4px;
+	padding: 2px 6px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 3px;
+}
+
+.quality-menu {
+	position: absolute;
+	bottom: 100%;
+	right: 0;
+	margin-bottom: 8px;
+	min-width: 140px;
+	background: rgba(20, 20, 40, 0.98);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+	animation: slideUp 0.2s ease;
+	z-index: 100;
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.quality-option {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 10px 14px;
+	text-align: left;
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+	transition: background var(--transition);
+}
+
+.quality-option:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.quality-option.active {
+	background: rgba(74, 108, 247, 0.2);
+	color: var(--accent);
+}
+
+.quality-bitrate {
+	font-size: 0.7rem;
+	color: var(--text-muted);
+}
+
+/* Enhanced controls layout */
+.live-player-controls {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: linear-gradient(
+		to top,
+		rgba(0, 0, 0, 0.95) 0%,
+		rgba(0, 0, 0, 0.7) 70%,
+		transparent 100%
+	);
+	padding: 20px 20px 16px;
+	z-index: 20;
+	transition: opacity 0.3s ease;
+}
+
+.player-title-bar {
+	margin-top: 12px;
+}
+
+.player-video-title {
+	display: block;
+	font-size: 1rem;
+	font-weight: 600;
+	color: white;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+	margin-bottom: 2px;
+}
+
+.player-video-description {
+	display: block;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+/* Control button active state */
+.control-btn.active {
+	color: var(--accent);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.live-badge-container {
+		top: 12px;
+		left: 12px;
+	}
+
+	.live-badge {
+		padding: 3px 8px;
+		font-size: 0.7rem;
+	}
+
+	.viewer-count {
+		display: none;
+	}
+
+	.dvr-indicator {
+		top: 12px;
+		padding: 6px 12px;
+	}
+
+	.dvr-label {
+		font-size: 0.75rem;
+	}
+
+	.btn-go-live {
+		padding: 3px 8px;
+		font-size: 0.7rem;
+	}
+
+	.live-player-controls {
+		padding: 16px 12px 12px;
+	}
+
+	.player-video-title {
+		font-size: 0.9rem;
+	}
+
+	.player-video-description {
+		font-size: 0.75rem;
+	}
+
+	.quality-menu {
+		right: -10px;
+	}
+}

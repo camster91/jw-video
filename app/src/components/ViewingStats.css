@@ -1,0 +1,619 @@
+/* ═══════════════════════════════════════════════════════════════
+   Viewing Stats Component Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+.viewing-stats {
+	padding: 20px 4%;
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+.viewing-stats.loading,
+.viewing-stats.empty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 400px;
+}
+
+.stats-loading,
+.empty-stats {
+	text-align: center;
+	color: var(--text-secondary);
+}
+
+.empty-stats {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+}
+
+.empty-stats svg {
+	color: var(--text-muted);
+}
+
+/* ─── Stats Header ───────────────────────────────────────────────────────── */
+
+.stats-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid var(--border);
+}
+
+.stats-header h2 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.4rem;
+	font-weight: 600;
+}
+
+.time-range-selector {
+	display: flex;
+	gap: 4px;
+	background: var(--bg-card);
+	padding: 4px;
+	border-radius: 8px;
+}
+
+.time-range-selector button {
+	padding: 8px 16px;
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+	background: none;
+	border-radius: 6px;
+	transition: all var(--transition);
+}
+
+.time-range-selector button:hover {
+	color: var(--text-primary);
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.time-range-selector button.active {
+	background: var(--accent);
+	color: white;
+}
+
+/* ─── Stats Overview Cards ──────────────────────────────────────────────── */
+
+.stats-overview {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+	margin-bottom: 32px;
+}
+
+.stat-card {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 20px;
+	background: var(--bg-card);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--border);
+	transition: all var(--transition);
+}
+
+.stat-card:hover {
+	background: var(--bg-hover);
+	border-color: var(--accent);
+	transform: translateY(-2px);
+}
+
+.stat-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.stat-icon.clock {
+	background: rgba(74, 108, 247, 0.2);
+	color: var(--accent);
+}
+
+.stat-icon.film {
+	background: rgba(231, 76, 60, 0.2);
+	color: var(--danger);
+}
+
+.stat-icon.star {
+	background: rgba(245, 166, 35, 0.2);
+	color: #f5a623;
+}
+
+.stat-icon.flame {
+	background: rgba(255, 100, 100, 0.2);
+	color: #ff6464;
+}
+
+.stat-details {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	overflow: hidden;
+}
+
+.stat-value {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--text-primary);
+	white-space: nowrap;
+}
+
+.stat-label {
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+}
+
+/* ─── Stats Section ────────────────────────────────────────────────────── */
+
+.stats-section {
+	margin-bottom: 32px;
+	padding: 24px;
+	background: var(--bg-card);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--border);
+}
+
+.stats-section h3 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 20px;
+	color: var(--text-primary);
+}
+
+/* ─── Categories Chart ─────────────────────────────────────────────────── */
+
+.categories-chart {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.category-bar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.category-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 180px;
+}
+
+.category-rank {
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--accent);
+	min-width: 24px;
+}
+
+.category-name {
+	font-size: 0.9rem;
+	color: var(--text-primary);
+	flex: 1;
+}
+
+.category-count {
+	font-size: 0.75rem;
+	color: var(--text-muted);
+}
+
+.category-progress {
+	flex: 1;
+	height: 8px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.category-progress-bar {
+	height: 100%;
+	background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+	border-radius: 4px;
+	transition: width 0.5s ease;
+}
+
+.category-time {
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+	min-width: 70px;
+	text-align: right;
+	font-weight: 500;
+}
+
+/* ─── Activity Calendar ────────────────────────────────────────────────── */
+
+.activity-calendar {
+	overflow-x: auto;
+	padding: 10px 0;
+}
+
+.calendar-grid {
+	display: flex;
+	gap: 4px;
+}
+
+.calendar-week {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.calendar-day {
+	width: 14px;
+	height: 14px;
+	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.05);
+	transition: all var(--transition);
+}
+
+.calendar-day:hover {
+	transform: scale(1.2);
+}
+
+.calendar-day.level-0 {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.calendar-day.level-1 {
+	background: rgba(74, 108, 247, 0.3);
+}
+
+.calendar-day.level-2 {
+	background: rgba(74, 108, 247, 0.5);
+}
+
+.calendar-day.level-3 {
+	background: rgba(74, 108, 247, 0.7);
+}
+
+.calendar-day.level-4 {
+	background: rgba(74, 108, 247, 0.9);
+}
+
+/* ─── Series List ──────────────────────────────────────────────────────── */
+
+.series-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.series-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 16px;
+	background: rgba(255, 255, 255, 0.03);
+	border-radius: 8px;
+	transition: all var(--transition);
+}
+
+.series-item:hover {
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.series-rank {
+	font-size: 0.9rem;
+	font-weight: 700;
+	color: var(--accent);
+	min-width: 30px;
+}
+
+.series-details {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	flex: 1;
+}
+
+.series-title {
+	font-size: 0.95rem;
+	color: var(--text-primary);
+	font-weight: 500;
+}
+
+.series-meta {
+	font-size: 0.8rem;
+	color: var(--text-muted);
+}
+
+/* ─── Time Report Chart ────────────────────────────────────────────────── */
+
+.time-report-chart {
+	display: flex;
+	gap: 8px;
+	align-items: flex-end;
+	height: 200px;
+	padding: 10px 0;
+	overflow-x: auto;
+}
+
+.report-bar-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	min-width: 40px;
+}
+
+.report-label {
+	font-size: 0.7rem;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+.report-bar {
+	width: 24px;
+	height: 150px;
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 4px 4px 0 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.report-bar-fill {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: linear-gradient(to top, var(--accent), var(--accent-hover));
+	border-radius: 4px 4px 0 0;
+	transition: height 0.5s ease;
+}
+
+.report-value {
+	font-size: 0.7rem;
+	color: var(--text-secondary);
+	text-align: center;
+	white-space: nowrap;
+}
+
+/* ─── Achievements Grid ────────────────────────────────────────────────── */
+
+.achievements-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 16px;
+}
+
+.achievement-badge {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 16px;
+	background: rgba(255, 255, 255, 0.03);
+	border-radius: 12px;
+	border: 2px solid transparent;
+	transition: all var(--transition);
+}
+
+.achievement-badge.earned {
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.achievement-badge.locked {
+	opacity: 0.5;
+	filter: grayscale(1);
+}
+
+.achievement-badge.locked .achievement-icon {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+/* Achievement Rarity Styles */
+.achievement-badge.common {
+	border-color: rgba(255, 255, 255, 0.2);
+}
+
+.achievement-badge.uncommon {
+	border-color: rgba(74, 108, 247, 0.4);
+}
+
+.achievement-badge.uncommon.earned {
+	border-color: rgba(74, 108, 247, 0.8);
+	box-shadow: 0 0 20px rgba(74, 108, 247, 0.2);
+}
+
+.achievement-badge.rare {
+	border-color: rgba(168, 85, 247, 0.4);
+}
+
+.achievement-badge.rare.earned {
+	border-color: rgba(168, 85, 247, 0.8);
+	box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.achievement-badge.epic {
+	border-color: rgba(245, 166, 35, 0.4);
+}
+
+.achievement-badge.epic.earned {
+	border-color: rgba(245, 166, 35, 0.8);
+	box-shadow: 0 0 20px rgba(245, 166, 35, 0.2);
+}
+
+.achievement-badge.legendary {
+	border-color: rgba(231, 76, 60, 0.4);
+}
+
+.achievement-badge.legendary.earned {
+	border-color: rgba(231, 76, 60, 0.8);
+	box-shadow: 0 0 25px rgba(231, 76, 60, 0.3);
+}
+
+.achievement-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	background: rgba(255, 255, 255, 0.1);
+	transition: all var(--transition);
+}
+
+.achievement-badge.earned .achievement-icon {
+	background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+	color: white;
+}
+
+.achievement-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	flex: 1;
+	min-width: 0;
+}
+
+.achievement-name {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.achievement-description {
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+	line-height: 1.4;
+}
+
+.achievement-earned {
+	font-size: 0.7rem;
+	color: var(--accent);
+	margin-top: 2px;
+}
+
+/* ─── Responsive Styles ────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+	.stats-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+	}
+
+	.time-range-selector {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	.time-range-selector button {
+		padding: 6px 12px;
+		font-size: 0.8rem;
+		flex: 1;
+		text-align: center;
+	}
+
+	.stats-overview {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.stat-card {
+		padding: 16px;
+	}
+
+	.stat-icon {
+		width: 40px;
+		height: 40px;
+	}
+
+	.stat-value {
+		font-size: 1.2rem;
+	}
+
+	.stat-label {
+		font-size: 0.8rem;
+	}
+
+	.stats-section {
+		padding: 16px;
+	}
+
+	.category-info {
+		min-width: 120px;
+	}
+
+	.category-count {
+		display: none;
+	}
+
+	.achievements-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.time-report-chart {
+		height: 160px;
+	}
+
+	.report-bar {
+		height: 100px;
+	}
+
+	.calendar-day {
+		width: 12px;
+		height: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.stats-overview {
+		grid-template-columns: 1fr;
+	}
+
+	.stat-card {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.category-bar {
+		flex-wrap: wrap;
+	}
+
+	.category-info {
+		min-width: 100%;
+		margin-bottom: 8px;
+	}
+
+	.category-progress {
+		width: 100%;
+	}
+
+	.category-time {
+		width: 100%;
+		text-align: left;
+		margin-top: 4px;
+	}
+
+	.time-report-chart {
+		gap: 4px;
+	}
+
+	.report-bar-container {
+		min-width: 30px;
+	}
+
+	.report-label {
+		font-size: 0.6rem;
+	}
+
+	.report-bar {
+		width: 18px;
+	}
+}

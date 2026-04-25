@@ -14,13 +14,15 @@ import { VideoCard } from "./components/VideoCard";
 import { VideoCarousel } from "./components/VideoCarousel";
 import { VideoDetail } from "./components/VideoDetail";
 import { VideoPlayer } from "./components/VideoPlayer";
+import { AdvancedSearchPage } from "./pages/AdvancedSearchPage";
+import { LivePage } from "./pages/LivePage";
 import {
 	getCategories,
-	getFavorites,
 	getFeatured,
 	getRecentlyPublished,
 	getSubcategories,
 	getVideo,
+	getVideos,
 	getVideosByCategory,
 } from "./services/api";
 import type { Category, Video } from "./types";
@@ -34,10 +36,11 @@ function HomePage() {
 		{ name: string; videos: Video[] }[]
 	>([]);
 	const [playingVideo, setPlayingVideo] = useState<Video | null>(null);
-	const _navigate = useNavigate();
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		async function load() {
+			setLoading(true);
 			const [feat, recent, categories] = await Promise.all([
 				getFeatured(),
 				getRecentlyPublished(20),
@@ -46,7 +49,6 @@ function HomePage() {
 			setFeatured(feat);
 			setRecent(recent);
 
-			// Build category rows with videos
 			const topCats = categories.filter((c) => !c.parentKey);
 			const rows: { name: string; videos: Video[] }[] = [];
 
@@ -56,6 +58,7 @@ function HomePage() {
 			}
 
 			setCategoryRows(rows);
+			setLoading(false);
 		}
 		load();
 	}, []);
@@ -67,6 +70,19 @@ function HomePage() {
 				onBack={() => setPlayingVideo(null)}
 				autoPlay
 			/>
+		);
+	}
+
+	if (loading) {
+		return (
+			<div className="page">
+				<div className="skeleton-hero" />
+				<div className="skeleton-grid">
+					{[...Array(6)].map((_, i) => (
+						<div key={i} className="skeleton-card" />
+					))}
+				</div>
+			</div>
 		);
 	}
 
@@ -96,12 +112,13 @@ function HomePage() {
 
 function BrowsePage() {
 	const [categories, setCategories] = useState<Category[]>([]);
-	const _navigate = useNavigate();
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		getCategories().then((cats) =>
-			setCategories(cats.filter((c) => !c.parentKey)),
-		);
+		getCategories().then((cats) => {
+			setCategories(cats.filter((c) => !c.parentKey));
+			setLoading(false);
+		});
 	}, []);
 
 	return (
@@ -109,11 +126,19 @@ function BrowsePage() {
 			<div className="page-header">
 				<h1>Browse Videos</h1>
 			</div>
-			<div className="category-grid">
-				{categories.map((cat) => (
-					<CategoryCard key={cat.key} category={cat} />
-				))}
-			</div>
+			{loading ? (
+				<div className="skeleton-grid">
+					{[...Array(8)].map((_, i) => (
+						<div key={i} className="skeleton-card" />
+					))}
+				</div>
+			) : (
+				<div className="category-grid">
+					{categories.map((cat) => (
+						<CategoryCard key={cat.key} category={cat} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 }
@@ -124,16 +149,18 @@ function CategoryPage() {
 	const { key } = useParams<{ key: string }>();
 	const [videos, setVideos] = useState<Video[]>([]);
 	const [subcategories, setSubcategories] = useState<Category[]>([]);
-	const [category, _setCategory] = useState<Category | null>(null);
 	const [playingVideo, setPlayingVideo] = useState<Video | null>(null);
+	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!key) return;
+		setLoading(true);
 		Promise.all([getVideosByCategory(key), getSubcategories(key)]).then(
 			([vids, subs]) => {
 				setVideos(vids);
 				setSubcategories(subs);
+				setLoading(false);
 			},
 		);
 	}, [key]);
@@ -154,7 +181,7 @@ function CategoryPage() {
 				<button type="button" className="back-btn" onClick={() => navigate(-1)}>
 					← Back
 				</button>
-				<h1>{category?.name ?? key}</h1>
+				<h1>{key}</h1>
 			</div>
 			{subcategories.length > 0 && (
 				<div className="subcategory-list">
@@ -169,12 +196,19 @@ function CategoryPage() {
 					))}
 				</div>
 			)}
-			<div className="video-grid">
-				{videos.map((v) => (
-					<VideoCard key={v.key} video={v} onPlay={setPlayingVideo} />
-				))}
-			</div>
-			{videos.length === 0 && (
+			{loading ? (
+				<div className="skeleton-grid">
+					{[...Array(6)].map((_, i) => (
+						<div key={i} className="skeleton-card" />
+					))}
+				</div>
+			) : videos.length > 0 ? (
+				<div className="video-grid">
+					{videos.map((v) => (
+						<VideoCard key={v.key} video={v} onPlay={setPlayingVideo} />
+					))}
+				</div>
+			) : (
 				<p className="empty-text">No videos found in this category.</p>
 			)}
 		</div>
@@ -185,13 +219,14 @@ function CategoryPage() {
 
 function VideoPage() {
 	const { key } = useParams<{ key: string }>();
-	const _navigate = useNavigate();
 	const [video, setVideo] = useState<Video | null>(null);
 	const [suggested, setSuggested] = useState<Video[]>([]);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (!key) return;
+		setLoading(true);
 		getVideo(key).then(async (v) => {
 			if (v) {
 				setVideo(v);
@@ -200,15 +235,25 @@ function VideoPage() {
 					: [];
 				setSuggested(catVids.filter((sv) => sv.key !== v.key));
 			}
+			setLoading(false);
 		});
 	}, [key]);
 
-	if (!video)
+	if (loading) {
 		return (
 			<div className="page">
-				<p>Loading...</p>
+				<div className="skeleton-detail" />
 			</div>
 		);
+	}
+
+	if (!video) {
+		return (
+			<div className="page">
+				<p>Video not found.</p>
+			</div>
+		);
+	}
 
 	if (isPlaying) {
 		return (
@@ -225,21 +270,22 @@ function VideoPage() {
 	);
 }
 
-// ─── Favorites Page ────────────────────────────────────────────────────────
+// ─── Favorites Page (N+1 fixed) ──────────────────────────────────────────
 
 function FavoritesPage() {
 	const [favorites, setFavorites] = useState<Video[]>([]);
+	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		async function load() {
+			setLoading(true);
 			const favKeys = getFavorites();
-			const vids: Video[] = [];
-			for (const k of favKeys) {
-				const v = await getVideo(k);
-				if (v) vids.push(v);
-			}
-			setFavorites(vids);
+			// Batch load all videos once instead of N+1 queries
+			const all = await getVideos(1, 10000);
+			const favs = all.videos.filter((v) => favKeys.includes(v.key));
+			setFavorites(favs);
+			setLoading(false);
 		}
 		load();
 	}, []);
@@ -249,7 +295,13 @@ function FavoritesPage() {
 			<div className="page-header">
 				<h1>My List</h1>
 			</div>
-			{favorites.length === 0 ? (
+			{loading ? (
+				<div className="skeleton-grid">
+					{[...Array(4)].map((_, i) => (
+						<div key={i} className="skeleton-card" />
+					))}
+				</div>
+			) : favorites.length === 0 ? (
 				<p className="empty-text">
 					Videos you add to My List will appear here.
 				</p>
@@ -278,6 +330,8 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/browse" element={<BrowsePage />} />
+					<Route path="/search" element={<AdvancedSearchPage />} />
+					<Route path="/live" element={<LivePage />} />
 					<Route path="/category/:key" element={<CategoryPage />} />
 					<Route path="/video/:key" element={<VideoPage />} />
 					<Route path="/favorites" element={<FavoritesPage />} />

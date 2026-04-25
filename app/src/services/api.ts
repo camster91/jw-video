@@ -1,7 +1,8 @@
 import type { Category, Video, VideoData } from "../types";
 
 // Remote video data (GitHub, updated daily by local cron)
-const REMOTE_DATA_URL = "https://raw.githubusercontent.com/camster91/jw-video/master/app/public/videos.json";
+const _REMOTE_DATA_URL =
+	"https://raw.githubusercontent.com/camster91/jw-video/master/app/public/videos.json";
 
 let cachedData: VideoData | undefined;
 
@@ -143,7 +144,11 @@ export function getWatchHistoryWithProgress(): WatchHistoryEntry[] {
 	}
 }
 
-export function addToHistory(key: string, progress?: number, lastPosition?: number): void {
+export function addToHistory(
+	key: string,
+	progress?: number,
+	lastPosition?: number,
+): void {
 	const hist = getWatchHistory().filter((k) => k !== key);
 	hist.unshift(key);
 	if (hist.length > 100) hist.pop();
@@ -163,24 +168,41 @@ export function addToHistory(key: string, progress?: number, lastPosition?: numb
 	localStorage.setItem(HISTORY_PROGRESS_KEY, JSON.stringify(histProgress));
 }
 
-export function updateWatchProgress(key: string, progress: number, lastPosition: number): void {
+export function updateWatchProgress(
+	key: string,
+	progress: number,
+	lastPosition: number,
+): void {
 	const histProgress = getWatchHistoryWithProgress();
 	const idx = histProgress.findIndex((h) => h.key === key);
 	if (idx !== -1) {
 		histProgress[idx] = { ...histProgress[idx], progress, lastPosition };
 	} else {
-		histProgress.unshift({ key, watchedAt: Date.now(), progress, lastPosition });
+		histProgress.unshift({
+			key,
+			watchedAt: Date.now(),
+			progress,
+			lastPosition,
+		});
 	}
 	localStorage.setItem(HISTORY_PROGRESS_KEY, JSON.stringify(histProgress));
 }
 
 export function removeFromHistory(key: string): void {
-	localStorage.setItem(HISTORY_KEY, JSON.stringify(getWatchHistory().filter((k) => k !== key)));
-	localStorage.setItem(HISTORY_PROGRESS_KEY, JSON.stringify(getWatchHistoryWithProgress().filter((h) => h.key !== key)));
+	localStorage.setItem(
+		HISTORY_KEY,
+		JSON.stringify(getWatchHistory().filter((k) => k !== key)),
+	);
+	localStorage.setItem(
+		HISTORY_PROGRESS_KEY,
+		JSON.stringify(getWatchHistoryWithProgress().filter((h) => h.key !== key)),
+	);
 }
 
 export function getWatchedVideos(): Video[] {
 	if (!cachedData) return [];
 	const hist = getWatchHistory();
-	return hist.map((k) => cachedData!.videos.find((v) => v.key === k)).filter(Boolean) as Video[];
+	return hist
+		.map((k) => cachedData?.videos.find((v) => v.key === k))
+		.filter(Boolean) as Video[];
 }
